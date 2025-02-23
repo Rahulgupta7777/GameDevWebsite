@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Development</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      /* Gold Effect - 1st Place */
+      .leaderboard-row.gold {
+        background: linear-gradient(
+          45deg,
+          rgba(255, 215, 0, 0.1),
+          rgba(255, 215, 0, 0.2)
+        );
+        border: 1px solid #ffd700;
+      }
+
+      .leaderboard-row.gold .rank,
+      .leaderboard-row.gold .team,
+      .leaderboard-row.gold .score {
+        color: #ffd700;
+        text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700;
+        animation: goldGlow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes goldGlow {
+        from {
+          text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+        }
+        to {
+          text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700;
+        }
+      }
+
+      /* Silver Effect - 2nd Place */
+      .leaderboard-row.silver {
+        background: linear-gradient(
+          45deg,
+          rgba(192, 192, 192, 0.1),
+          rgba(192, 192, 192, 0.2)
+        );
+        border: 1px solid #c0c0c0;
+      }
+
+      .leaderboard-row.silver .rank,
+      .leaderboard-row.silver .team,
+      .leaderboard-row.silver .score {
+        color: #c0c0c0;
+        text-shadow: 0 0 10px #c0c0c0;
+      }
+
+      /* Bronze Effect - 3rd Place */
+      .leaderboard-row.bronze {
+        background: linear-gradient(
+          45deg,
+          rgba(205, 127, 50, 0.1),
+          rgba(205, 127, 50, 0.2)
+        );
+        border: 1px solid #cd7f32;
+      }
+
+      .leaderboard-row.bronze .rank,
+      .leaderboard-row.bronze .team,
+      .leaderboard-row.bronze .score {
+        color: #cd7f32;
+        text-shadow: 0 0 10px #cd7f32;
+      }
+
+      /* Audio Controls Styling */
+      .audio-controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+        border-radius: 50px;
+        border: 1px solid #ffd700;
+      }
+
+      .audio-controls button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        padding: 0;
+      }
+
+      .audio-controls button img {
+        width: 30px;
+        height: 30px;
+        filter: brightness(0) saturate(100%) invert(83%) sepia(71%)
+          saturate(638%) hue-rotate(359deg) brightness(103%) contrast(107%);
+        transition: all 0.3s ease;
+      }
+
+      .audio-controls button:hover {
+        background: rgba(255, 215, 0, 0.2);
+      }
+
+      .audio-controls button.active img {
+        filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
+          hue-rotate(93deg) brightness(103%) contrast(103%);
+      }
+
+      .minigame-section {
+        margin: 40px 0;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .game-container {
+        width: 600px;
+        height: 400px;
+        margin: 0 auto;
+        position: relative;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid #ffd700;
+        overflow: hidden;
+        cursor: crosshair;
+        background-image: linear-gradient(
+            rgba(20, 20, 20, 0.7) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(20, 20, 20, 0.7) 1px, transparent 1px);
+        background-size: 30px 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .game-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+      }
+
+      .spaceship {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ffd700;
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        filter: drop-shadow(0 0 10px #ffd700);
+        animation: hover 2s ease-in-out infinite;
+      }
+      @keyframes hover {
+        0%,
+        100% {
+          transform: translateY(0) translateX(-50%);
+        }
+        50% {
+          transform: translateY(-10px) translateX(-50%);
+        }
+      }
+
+      .laser {
+        width: 4px;
+        height: 15px;
+        background: #ff1493;
+        position: absolute;
+        border-radius: 2px;
+        box-shadow: 0 0 10px #ff1493;
+      }
+
+      .enemy {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        background: #ffd700;
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        animation: enemyGlow 1s ease-in-out infinite alternate;
+      }
+
+      @keyframes enemyGlow {
+        from {
+          filter: drop-shadow(0 0 5px #ffd700);
+        }
+        to {
+          filter: drop-shadow(0 0 15px #ffd700);
+        }
+      }
+
+      .game-stats {
+        color: #ffd700;
+        font-family: "Press Start 2P", monospace;
+        margin: 20px 0;
+        text-shadow: 0 0 10px #ffd700;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+      }
+
+      .game-over {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #ffd700;
+        font-size: 24px;
+        display: none;
+        text-shadow: 0 0 10px #ffd700;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border: 2px solid #ffd700;
+        border-radius: 10px;
+      }
+
+      .start-button {
+        background: linear-gradient(90deg, #ff4500, #ff1493);
+        border: none;
+        padding: 10px 20px;
+        color: white;
+        cursor: pointer;
+        font-family: "Press Start 2P", monospace;
+        margin: 10px;
+        border-radius: 5px;
+      }
+
+      /* Welcome Text Animation */
+      .welcome-text {
+        animation: textGlow 2s ease-in-out infinite alternate;
+        position: relative;
+      }
+
+      @keyframes textGlow {
+        from {
+          text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+        }
+        to {
+          text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ff1493;
+        }
+      }
+
+      /* Score Counter Animation */
+      @keyframes scorePopup {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Leaderboard Animations */
+      .leaderboard-card {
+        animation: slideInUp 1s ease-out;
+      }
+
+      @keyframes slideInUp {
+        from {
+          transform: translateY(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .leaderboard-row {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      .leaderboard-row:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      .leaderboard-row:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+      .leaderboard-row:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .leaderboard-row:nth-child(4) {
+        animation-delay: 0.5s;
+      }
+      .leaderboard-row:nth-child(5) {
+        animation-delay: 0.6s;
+      }
+      .leaderboard-row:nth-child(6) {
+        animation-delay: 0.7s;
+      }
+      .leaderboard-row:nth-child(7) {
+        animation-delay: 0.8s;
+      }
+      .leaderboard-row:nth-child(8) {
+        animation-delay: 0.9s;
+      }
+      .leaderboard-row:nth-child(9) {
+        animation-delay: 1s;
+      }
+      .leaderboard-row:nth-child(10) {
+        animation-delay: 1.1s;
+      }
+
+      /* Special Guest Card Animation */
+      .guest-card {
+        animation: cardFloat 3s ease-in-out infinite;
+        transition: transform 0.3s ease;
+      }
+
+      .guest-card:hover {
+        transform: translateY(-10px) scale(1.02);
+      }
+
+      @keyframes cardFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+      }
+
+      /* Form Animations */
+      .submission-form {
+        animation: formSlideIn 0.8s ease-out;
+      }
+
+      @keyframes formSlideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .member-section {
+        animation: fadeInScale 0.5s ease-out forwards;
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      @keyframes fadeInScale {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .member-section:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      .member-section:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+      .member-section:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+
+      @keyframes footerGlow {
+        from {
+          text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+          transform: scale(1);
+        }
+        to {
+          text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ff1493;
+          transform: scale(1.05);
+        }
+      }
+
+      .footer-text:hover {
+        transform: translateY(-5px) scale(1.1);
+        animation: shake 0.5s ease-in-out;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0) translateY(-5px) scale(1.1);
+        }
+        25% {
+          transform: translateX(-5px) translateY(-5px) scale(1.1);
+        }
+        75% {
+          transform: translateX(5px) translateY(-5px) scale(1.1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="main-header">
+      <div class="header-container">
+        <div class="logo">
+          <h1>Hyperlume</h1>
+        </div>
+        <nav class="nav-menu">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">OurTeam</a></li>
+            <li><a href="/upload">Upload</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <!-- <button class="btn login">Login</button> -->
+          <a href="/register" class="btn register">Register</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="submission-section">
+      <div class="submission-container">
+        <h2>Team Registration</h2>
+        <% if (error) { %>
+        <div class="error"><%= error %></div>
+        <% } %>
+        <form
+          id="teamSubmissionForm"
+          class="submission-form"
+          action="/registration"
+          method="POST"
+        >
+          <div class="form-group">
+            <label for="teamName">Team Name</label>
+            <input type="text" id="teamName" name="teamName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="teamPassword">Password</label>
+            <input
+              type="password"
+              id="teamPassword"
+              name="password"
+              minlength="8"
+              required
+            />
+          </div>
+
+          <!-- Team Leader Details -->
+          <div class="member-section">
+            <h3>Team Leader</h3>
+            <div class="form-group">
+              <label for="leaderName">Full Name</label>
+              <input type="text" id="leaderName" name="leaderName" required />
+            </div>
+            <div class="form-group">
+              <label for="leaderEmail">ADYPU Email</label>
+              <input
+                type="email"
+                id="leaderEmail"
+                name="leaderEmail"
+                pattern=".+@adypu\.edu\.in"
+                title="Please use your ADYPU email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="leaderURN">URN Number</label>
+              <input type="text" id="leaderURN" name="leaderURN" required />
+            </div>
+          </div>
+
+          <!-- Member 2 Details -->
+          <div class="member-section">
+            <h3>Member 2</h3>
+            <div class="form-group">
+              <label for="member2Name">Full Name</label>
+              <input type="text" id="member2Name" name="member2Name" required />
+            </div>
+            <div class="form-group">
+              <label for="member2Email">ADYPU Email</label>
+              <input
+                type="email"
+                id="member2Email"
+                name="member2Email"
+                pattern=".+@adypu\.edu\.in"
+                title="Please use your ADYPU email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="member2URN">URN Number</label>
+              <input type="text" id="member2URN" name="member2URN" required />
+            </div>
+          </div>
+
+          <!-- Member 3 Details (Optional) -->
+          <div class="member-section">
+            <h3>Member 3 (Optional)</h3>
+            <div class="form-group">
+              <label for="member3Name">Full Name</label>
+              <input type="text" id="member3Name" name="member3Name" />
+            </div>
+            <div class="form-group">
+              <label for="member3Email">ADYPU Email</label>
+              <input
+                type="email"
+                id="member3Email"
+                name="member3Email"
+                pattern=".+@adypu\.edu\.in"
+                title="Please use your ADYPU email"
+              />
+            </div>
+            <div class="form-group">
+              <label for="member3URN">URN Number</label>
+              <input type="text" id="member3URN" name="member3URN" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn submit-btn">
+            Submit Team Registration
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+      <source src="Assets/AdhesiveWombat.mp3" type="audio/mp3" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <audio id="keyboardSound">
+      <source src="Assets/mech-keyboard.mp3" type="audio/mp3" />
+    </audio>
+
+    <audio id="background-music" loop>
+      <source src="path/to/background-music.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <audio id="laser-sound">
+      <source src="path/to/laser-sound.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <audio id="explosion-sound">
+      <source src="path/to/explosion-sound.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="audio-controls">
+      <button id="musicToggle" onclick="toggleMusic()">
+        <img src="Assets/Music.png" alt="Toggle Music" />
+      </button>
+    </div>
+
+    <script src="script1.js"></script>
+    <script>
+      const bgMusic = document.getElementById("bgMusic");
+      const musicToggle = document.getElementById("musicToggle");
+      let isMusicPlaying = false;
+
+      // Function to toggle music
+      function toggleMusic() {
+        if (isMusicPlaying) {
+          bgMusic.pause();
+          musicToggle.classList.remove("active");
+        } else {
+          bgMusic.play();
+          musicToggle.classList.add("active");
+        }
+        isMusicPlaying = !isMusicPlaying;
+      }
+
+      // Add event listener for when the page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        // Start music muted by default
+        bgMusic.volume = 0.2; // Set volume to 20% instead of 50%
+      });
+
+      // Handle user interaction to start playing
+      document.addEventListener(
+        "click",
+        function () {
+          if (!isMusicPlaying) {
+            bgMusic.play().catch(function (error) {
+              console.log("Audio play failed:", error);
+            });
+            isMusicPlaying = true;
+            musicToggle.classList.add("active");
+          }
+        },
+        { once: true }
+      );
+
+      let gameActive = false;
+      let score = 0;
+      let highScore = 0;
+      let spaceshipPos = 50;
+      const gameContainer = document.getElementById("gameContainer");
+      const spaceship = document.getElementById("spaceship");
+      const scoreElement = document.getElementById("score");
+      const highScoreElement = document.getElementById("highScore");
+      const gameOver = document.getElementById("gameOver");
+      const finalScore = document.getElementById("finalScore");
+
+      function startGame() {
+        if (gameActive) return;
+        gameActive = true;
+        score = 0;
+        scoreElement.textContent = score;
+        gameOver.style.display = "none";
+        spawnEnemies();
+      }
+
+      function moveSpaceship(e) {
+        if (!gameActive) return;
+
+        // Only play sound if position actually changed
+        const oldPos = spaceshipPos;
+        const containerRect = gameContainer.getBoundingClientRect();
+        const x = e.clientX - containerRect.left;
+        spaceshipPos = (x / containerRect.width) * 100;
+        spaceshipPos = Math.max(5, Math.min(95, spaceshipPos));
+
+        spaceship.style.left = spaceshipPos + "%";
+      }
+
+      function shoot(e) {
+        if (!gameActive) return;
+
+        // Play keyboard sound
+        keyboardSound.currentTime = 0; // Reset sound to start
+        keyboardSound.play();
+
+        const laser = document.createElement("div");
+        laser.className = "laser";
+        laser.style.left = spaceshipPos + "%";
+        laser.style.bottom = "60px";
+        gameContainer.appendChild(laser);
+
+        const laserInterval = setInterval(() => {
+          const laserRect = laser.getBoundingClientRect();
+          const enemies = document.getElementsByClassName("enemy");
+
+          Array.from(enemies).forEach((enemy) => {
+            const enemyRect = enemy.getBoundingClientRect();
+            if (isColliding(laserRect, enemyRect)) {
+              enemy.remove();
+              laser.remove();
+              clearInterval(laserInterval);
+              score += 10;
+              updateScore(score);
+            }
+          });
+
+          if (parseInt(laser.style.bottom) > gameContainer.offsetHeight) {
+            laser.remove();
+            clearInterval(laserInterval);
+          } else {
+            laser.style.bottom = parseInt(laser.style.bottom) + 5 + "px";
+          }
+        }, 16);
+      }
+
+      function spawnEnemies() {
+        if (!gameActive) return;
+
+        const enemy = document.createElement("div");
+        enemy.className = "enemy";
+        enemy.style.left =
+          Math.random() * (gameContainer.offsetWidth - 30) + "px";
+        enemy.style.top = "-30px";
+        gameContainer.appendChild(enemy);
+
+        let enemyPos = -30;
+        const enemyInterval = setInterval(() => {
+          if (!gameActive) {
+            clearInterval(enemyInterval);
+            return;
+          }
+
+          enemyPos += 2;
+          enemy.style.top = enemyPos + "px";
+
+          // Check for collision with spaceship
+          const enemyRect = enemy.getBoundingClientRect();
+          const spaceshipRect = spaceship.getBoundingClientRect();
+
+          if (isColliding(enemyRect, spaceshipRect)) {
+            enemy.remove();
+            clearInterval(enemyInterval);
+            endGame();
+            return;
+          }
+
+          // Remove enemy when it's off screen but don't end game
+          if (enemyPos > gameContainer.offsetHeight) {
+            enemy.remove();
+            clearInterval(enemyInterval);
+          }
+        }, 16);
+
+        // Spawn next enemy
+        setTimeout(() => {
+          if (gameActive) spawnEnemies();
+        }, 1000);
+      }
+
+      function isColliding(rect1, rect2) {
+        return !(
+          rect1.right < rect2.left ||
+          rect1.left > rect2.right ||
+          rect1.bottom < rect2.top ||
+          rect1.top > rect2.bottom
+        );
+      }
+
+      function endGame() {
+        gameActive = false;
+        if (score > highScore) {
+          highScore = score;
+          highScoreElement.textContent = highScore;
+        }
+        finalScore.textContent = `Final Score: ${score}`;
+        gameOver.style.display = "block";
+        const enemies = document.getElementsByClassName("enemy");
+        while (enemies.length > 0) {
+          enemies[0].remove();
+        }
+      }
+
+      gameContainer.addEventListener("mousemove", moveSpaceship);
+      gameContainer.addEventListener("click", shoot);
+
+      // Score animation
+      function updateScore(newScore) {
+        const scoreElement = document.getElementById("score");
+        scoreElement.style.animation = "scorePopup 0.3s ease";
+        scoreElement.textContent = newScore;
+        scoreElement.addEventListener("animationend", () => {
+          scoreElement.style.animation = "";
+        });
+      }
+
+      // Add intersection observer for animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.visibility = "visible";
+              entry.target.style.animation = entry.target.dataset.animation;
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      // Observe elements
+      document
+        .querySelectorAll(".leaderboard-card, .guest-card, .submission-form")
+        .forEach((el) => observer.observe(el));
+    </script>
+    <script src="mouseTrail.js"></script>
+
+    <!-- Add footer before closing body tag -->
+    <footer
+      style="
+        text-align: center;
+        padding: 20px;
+        color: #ffd700;
+        position: relative;
+        z-index: 2;
+      "
+    >
+      <p
+        class="footer-text"
+        style="
+          font-size: 1.2em;
+          text-shadow: 0 0 10px #ffd700;
+          animation: footerGlow 2s ease-in-out infinite alternate;
+          transition: transform 0.3s ease;
+          cursor: pointer;
+          display: inline-block;
+        "
+      >
+        Frontend by
+        <span
+          style="
+            background: linear-gradient(90deg, #ffd700, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+          "
+          >Aryan Verma</span
+        >
+      </p>
+    </footer>
+  </body>
+</html>

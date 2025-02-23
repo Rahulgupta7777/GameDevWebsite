@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Our Team</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Add navigation menu -->
+    <header class="main-header">
+      <div class="header-container">
+        <div class="logo">
+          <h1>Hyperlume</h1>
+        </div>
+        <nav class="nav-menu">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">OurTeam</a></li>
+            <li><a href="/upload">Upload</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <a href="/register" class="btn register">Register</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Add background effects containers -->
+    <div class="retro-background">
+      <div class="grid"></div>
+      <!-- Scanlines will be added by JavaScript -->
+    </div>
+
+    <div class="coin-background">
+      <!-- Coins will be added by JavaScript -->
+    </div>
+
+    <!-- Main content -->
+    <div
+      class="container"
+      style="margin-top: 100px; position: relative; z-index: 2"
+    >
+      <h1>Our Team</h1>
+
+      <section class="team-section">
+        <h2>Core Team</h2>
+        <div class="team-members">
+          <div class="member">
+            <h3>Madhur Rathod</h3>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/madhurrathod"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/MadhurRathod"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+          <div class="member">
+            <h3>Aryan Verma</h3>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/aryan-verma100806/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/notAryan10"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+          <div class="member">
+            <h3>Vaibhav Singh</h3>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/vaibhav-singh-4a206a312/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/Vaibhav-fusion"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+          <div class="member">
+            <h3>Sanket Jha</h3>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/sanket-jha-144844325/s"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/learn-dumboo24"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+          <div class="member">
+            <h3>Deepesh Dey</h3>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/deepesh-dey-9b72b3324/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/deepesh-dey"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="team-section">
+        <h2>Volunteers</h2>
+        <div class="team-members">
+          <div class="member">
+            <h3>Rahul</h3>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/rahul-gupta-992259326/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/rahul"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="team-section">
+        <h2>Special Mention</h2>
+        <div class="team-members">
+          <div class="member">
+            <h3>Kanishk Kumar Ranjan</h3>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/rahul-gupta-992259326/"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/rahul"
+                target="_blank"
+                class="social-link"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Add modal forms -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required />
+          </div>
+          <button type="submit" class="btn submit-btn">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="registerModal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Register</h2>
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="registerName">Full Name</label>
+            <input type="text" id="registerName" required />
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input type="email" id="registerEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" required />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" required />
+          </div>
+          <button type="submit" class="btn submit-btn">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add audio element for hover sound -->
+    <audio id="hoverSound">
+      <source src="Assets/impact-sound-effect.mp3" type="audio/mp3" />
+    </audio>
+
+    <!-- Add Font Awesome for social icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <script src="script.js"></script>
+    <script>
+      // Get all member cards and audio element
+      const memberCards = document.querySelectorAll(".member");
+      const hoverSound = document.getElementById("hoverSound");
+
+      // Add hover event listeners to each card
+      memberCards.forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          hoverSound.currentTime = 0; // Reset sound to start
+          hoverSound.volume = 0.2; // Set lower volume
+          hoverSound.play();
+        });
+      });
+    </script>
+    <script src="mouseTrail.js"></script>
+  </body>
+</html>
