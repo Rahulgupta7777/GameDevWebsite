@@ -7,10 +7,7 @@ const port = process.env.PORT || 4000;
 const connect = require("./connection");
 const Team = require("./model/user.model");
 const Game = require("./model/game.model");
-const { render } = require("ejs");
-const { error } = require("console");
 
-// ✅ Connect to database at startup
 connect();
 
 app.set("view engine", "ejs");
@@ -20,6 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
+  if (req.query.registration === "success") {
+    return res.render("index", {
+      message: "Registration successful. Please login to upload your game.",
+      type: "success",
+    });
+  }
   res.render("index", { message: null });
 });
 
@@ -27,11 +30,24 @@ app.post("/registration", async (req, res) => {
   const teamData = req.body;
   try {
     const existingTeam = await Team.findOne({ teamName: teamData.teamName });
-    console.log({ existingTeam });
     if (existingTeam) {
-      return res.render("registration", { error: "Team name already exists." });
+      return res.render("registration", {
+        message: "Team name already exists.",
+        teamData,
+      });
     }
-    return;
+
+    if (teamData.member3Name || teamData.member3Email || teamData.member3URN) {
+      if (
+        !(teamData.member3Name && teamData.member3Email && teamData.member3URN)
+      ) {
+        return res.render("registration", {
+          message: "Please fill in all fields for member 3.",
+          teamData,
+        });
+      }
+    }
+
     const team = new Team({
       teamName: teamData.teamName,
       password: teamData.password,
@@ -56,14 +72,13 @@ app.post("/registration", async (req, res) => {
     });
 
     await team.save();
-    res.redirect("/");
+    res.redirect("/?registration=success");
     return;
   } catch (error) {
     if (error.code === 11000) {
-      // Extract the field causing the issue
-      const duplicateField = Object.keys(error.keyPattern)[0]; // Gets the first duplicate field
+      const duplicateField = Object.keys(error.keyPattern)[0];
       res.render("registration", {
-        error: `The ${duplicateField} "${error.keyValue[duplicateField]}" already exists.`,
+        message: `The ${duplicateField} "${error.keyValue[duplicateField]}" already exists.`,
         teamData,
       });
       return;
@@ -71,8 +86,12 @@ app.post("/registration", async (req, res) => {
   }
 });
 
+app.get("/view", async (req, res) => {
+  const submissions = await Game.find();
+  res.render("submissions", { submissions, teamName: req.query.teamname });
+});
 app.get("/register", (req, res) => {
-  res.render("registration", { error: null });
+  res.render("registration", { message: null, teamData: null });
 });
 
 app.get("/about", (req, res) => {
@@ -80,28 +99,40 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/upload", (req, res) => {
-  res.render("login");
+  res.render("login", { message: null, data: null });
 });
 
 app.post("/upload", async (req, res) => {
   try {
-    console.log(req.body);
-    const { teamUserID, itchioURL, gameDescription, gameGenre } = req.body;
-    console.log({ teamUserID, itchioURL, gameDescription, gameGenre });
+    const { teamName, teamUserID, itchioURL, gameDescription, gameGenre } =
+      req.body;
+    console.log({
+      teamName,
+      teamUserID,
+      itchioURL,
+      gameDescription,
+      gameGenre,
+    });
     const game = new Game({
       teamUserID,
+      name: teamName,
       itchioURL,
       gameDescription,
       gameGenre,
     });
     const saveData = await game.save();
     if (!saveData) {
-      console.log("Error saving data");
+      res.render("upload", {
+        message: "Error uploading game",
+        teamID: teamUserID,
+        teamName,
+      });
       return;
     }
-    console.log(saveData);
-
-    res.send("Saved fuckoff");
+    res.render("index", {
+      message: "Game uploaded successfully",
+      type: "success",
+    });
   } catch (error) {
     console.log({ error: error.message });
   }
@@ -109,21 +140,43 @@ app.post("/upload", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { teamName, password } = req.body;
+  console.log(req.body);
   try {
-    const team = await Team.findOne({ teamName });
-
+    const team = await Team.findOne({ "leader.email": teamName });
     if (!team) {
-      console.log({ success: false, message: "Team not found" });
+      res.render("login", {
+        message: "Invalid email or password",
+        data: req.body,
+      });
+      return;
     }
+    console.log({ team });
 
     if (team.password !== password) {
-      console.log({ success: false, message: "Incorrect password" });
+      res.render("login", {
+        message: "Invalid email or password",
+        data: req.body,
+      });
+      return;
     }
-    return res.render("upload", { teamID: team._id });
+
+    const game = await Game.findOne({
+      teamUserID: team._id,
+    });
+    if (game) {
+      return res.redirect("/view?teamname=" + team.teamName);
+    }
+
+    return res.render("upload", {
+      message: null,
+      teamID: team._id,
+      teamName: team.teamName,
+    });
     console.log({ success: true, message: "Login successful", team });
   } catch (error) {
     console.error("Error validating team:", error);
     console.log({ success: false, message: "Server error" });
+    res.render("login", { message: "Server Error", data: null });
   }
 });
 

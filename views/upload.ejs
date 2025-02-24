@@ -210,24 +210,10 @@
     </div>
 
     <!-- Add navigation menu -->
-    <header class="main-header">
-      <div class="header-container">
-        <div class="logo">
-          <h1>Hyperlume</h1>
-        </div>
-        <nav class="nav-menu">
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">OurTeam</a></li>
-            <li><a href="/upload">Upload</a></li>
-          </ul>
-        </nav>
-        <div class="auth-buttons">
-            <a href="/register" class="btn register">Register</a>
-        </div>
-      </div>
-    </header>
-
+    <%- include('./utils/navbar') %>
+    <% if ( message) { %>
+      <div class='alert-danger'><%=  message %></div>
+    <% } %>
     <div
       class="container"
       style="margin-top: 100px; position: relative; z-index: 2"
@@ -239,9 +225,10 @@
         </div>
 
         <form id="gameSubmissionForm" method="POST" action="/upload">
-          <div class="form-group" style="display: none;">
-            <label for="teamName">Team User ID</label>
-            <input type="text" id="teamName" placeholder="Team Name" name="teamUserID" required value="<%= teamID %>"/>
+          <div class="form-group" >
+            <input type="hidden" name="teamUserID" required value="<%= teamID %>"/>
+            <input type="hidden" name="teamName" required value="<%= teamName %>"/>
+
           </div>
           <div class="form-group">
             <label for="itchioURL">Game Details</label>

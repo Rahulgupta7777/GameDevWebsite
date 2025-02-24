@@ -5,429 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game Development</title>
     <link rel="stylesheet" href="./styles.css" />
-    <style>
-      /* Gold Effect - 1st Place */
-      .leaderboard-row.gold {
-        background: linear-gradient(
-          45deg,
-          rgba(255, 215, 0, 0.1),
-          rgba(255, 215, 0, 0.2)
-        );
-        border: 1px solid #ffd700;
-      }
-
-      .leaderboard-row.gold .rank,
-      .leaderboard-row.gold .team,
-      .leaderboard-row.gold .score {
-        color: #ffd700;
-        text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffd700;
-        animation: goldGlow 2s ease-in-out infinite alternate;
-      }
-
-      @keyframes goldGlow {
-        from {
-          text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
-        }
-        to {
-          text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700;
-        }
-      }
-
-      /* Silver Effect - 2nd Place */
-      .leaderboard-row.silver {
-        background: linear-gradient(
-          45deg,
-          rgba(192, 192, 192, 0.1),
-          rgba(192, 192, 192, 0.2)
-        );
-        border: 1px solid #c0c0c0;
-      }
-
-      .leaderboard-row.silver .rank,
-      .leaderboard-row.silver .team,
-      .leaderboard-row.silver .score {
-        color: #c0c0c0;
-        text-shadow: 0 0 10px #c0c0c0;
-      }
-
-      /* Bronze Effect - 3rd Place */
-      .leaderboard-row.bronze {
-        background: linear-gradient(
-          45deg,
-          rgba(205, 127, 50, 0.1),
-          rgba(205, 127, 50, 0.2)
-        );
-        border: 1px solid #cd7f32;
-      }
-
-      .leaderboard-row.bronze .rank,
-      .leaderboard-row.bronze .team,
-      .leaderboard-row.bronze .score {
-        color: #cd7f32;
-        text-shadow: 0 0 10px #cd7f32;
-      }
-
-      /* Audio Controls Styling */
-      .audio-controls {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: rgba(0, 0, 0, 0.7);
-        padding: 10px;
-        border-radius: 50px;
-        border: 1px solid #ffd700;
-      }
-
-      .audio-controls button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        padding: 0;
-      }
-
-      .audio-controls button img {
-        width: 30px;
-        height: 30px;
-        filter: brightness(0) saturate(100%) invert(83%) sepia(71%)
-          saturate(638%) hue-rotate(359deg) brightness(103%) contrast(107%);
-        transition: all 0.3s ease;
-      }
-
-      .audio-controls button:hover {
-        background: rgba(255, 215, 0, 0.2);
-      }
-
-      .audio-controls button.active img {
-        filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
-          hue-rotate(93deg) brightness(103%) contrast(103%);
-      }
-
-      .minigame-section {
-        margin: 40px 0;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-      }
-
-      .game-container {
-        width: 600px;
-        height: 400px;
-        margin: 0 auto;
-        position: relative;
-        background: rgba(0, 0, 0, 0.8);
-        border: 2px solid #ffd700;
-        overflow: hidden;
-        cursor: crosshair;
-        background-image: linear-gradient(
-            rgba(20, 20, 20, 0.7) 1px,
-            transparent 1px
-          ),
-          linear-gradient(90deg, rgba(20, 20, 20, 0.7) 1px, transparent 1px);
-        background-size: 30px 30px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .game-container:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-      }
-
-      .spaceship {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #ffd700;
-        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        filter: drop-shadow(0 0 10px #ffd700);
-        animation: hover 2s ease-in-out infinite;
-      }
-      @keyframes hover {
-        0%,
-        100% {
-          transform: translateY(0) translateX(-50%);
-        }
-        50% {
-          transform: translateY(-10px) translateX(-50%);
-        }
-      }
-
-      .laser {
-        width: 4px;
-        height: 15px;
-        background: #ff1493;
-        position: absolute;
-        border-radius: 2px;
-        box-shadow: 0 0 10px #ff1493;
-      }
-
-      .enemy {
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        background: #ffd700;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        animation: enemyGlow 1s ease-in-out infinite alternate;
-      }
-
-      @keyframes enemyGlow {
-        from {
-          filter: drop-shadow(0 0 5px #ffd700);
-        }
-        to {
-          filter: drop-shadow(0 0 15px #ffd700);
-        }
-      }
-
-      .game-stats {
-        color: #ffd700;
-        font-family: "Press Start 2P", monospace;
-        margin: 20px 0;
-        text-shadow: 0 0 10px #ffd700;
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-      }
-
-      .game-over {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #ffd700;
-        font-size: 24px;
-        display: none;
-        text-shadow: 0 0 10px #ffd700;
-        text-align: center;
-        background: rgba(0, 0, 0, 0.8);
-        padding: 20px;
-        border: 2px solid #ffd700;
-        border-radius: 10px;
-      }
-
-      .start-button {
-        background: linear-gradient(90deg, #ff4500, #ff1493);
-        border: none;
-        padding: 10px 20px;
-        color: white;
-        cursor: pointer;
-        font-family: "Press Start 2P", monospace;
-        margin: 10px;
-        border-radius: 5px;
-      }
-
-      /* Welcome Text Animation */
-      .welcome-text {
-        animation: textGlow 2s ease-in-out infinite alternate;
-        position: relative;
-      }
-
-      @keyframes textGlow {
-        from {
-          text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
-        }
-        to {
-          text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ff1493;
-        }
-      }
-
-      /* Score Counter Animation */
-      @keyframes scorePopup {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.5);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      /* Leaderboard Animations */
-      .leaderboard-card {
-        animation: slideInUp 1s ease-out;
-      }
-
-      @keyframes slideInUp {
-        from {
-          transform: translateY(100px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      .leaderboard-row {
-        animation: fadeIn 0.5s ease-out forwards;
-        opacity: 0;
-      }
-
-      @keyframes fadeIn {
-        to {
-          opacity: 1;
-        }
-      }
-
-      .leaderboard-row:nth-child(1) {
-        animation-delay: 0.2s;
-      }
-      .leaderboard-row:nth-child(2) {
-        animation-delay: 0.3s;
-      }
-      .leaderboard-row:nth-child(3) {
-        animation-delay: 0.4s;
-      }
-      .leaderboard-row:nth-child(4) {
-        animation-delay: 0.5s;
-      }
-      .leaderboard-row:nth-child(5) {
-        animation-delay: 0.6s;
-      }
-      .leaderboard-row:nth-child(6) {
-        animation-delay: 0.7s;
-      }
-      .leaderboard-row:nth-child(7) {
-        animation-delay: 0.8s;
-      }
-      .leaderboard-row:nth-child(8) {
-        animation-delay: 0.9s;
-      }
-      .leaderboard-row:nth-child(9) {
-        animation-delay: 1s;
-      }
-      .leaderboard-row:nth-child(10) {
-        animation-delay: 1.1s;
-      }
-
-      /* Special Guest Card Animation */
-      .guest-card {
-        animation: cardFloat 3s ease-in-out infinite;
-        transition: transform 0.3s ease;
-      }
-
-      .guest-card:hover {
-        transform: translateY(-10px) scale(1.02);
-      }
-
-      @keyframes cardFloat {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-15px);
-        }
-      }
-
-      /* Form Animations */
-      .submission-form {
-        animation: formSlideIn 0.8s ease-out;
-      }
-
-      @keyframes formSlideIn {
-        from {
-          transform: translateX(-100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-
-      .member-section {
-        animation: fadeInScale 0.5s ease-out forwards;
-        opacity: 0;
-        transform: scale(0.9);
-      }
-
-      @keyframes fadeInScale {
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      .member-section:nth-child(1) {
-        animation-delay: 0.2s;
-      }
-      .member-section:nth-child(2) {
-        animation-delay: 0.4s;
-      }
-      .member-section:nth-child(3) {
-        animation-delay: 0.6s;
-      }
-
-      @keyframes footerGlow {
-        from {
-          text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
-          transform: scale(1);
-        }
-        to {
-          text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ff1493;
-          transform: scale(1.05);
-        }
-      }
-
-      .footer-text:hover {
-        transform: translateY(-5px) scale(1.1);
-        animation: shake 0.5s ease-in-out;
-      }
-
-      @keyframes shake {
-        0%,
-        100% {
-          transform: translateX(0) translateY(-5px) scale(1.1);
-        }
-        25% {
-          transform: translateX(-5px) translateY(-5px) scale(1.1);
-        }
-        75% {
-          transform: translateX(5px) translateY(-5px) scale(1.1);
-        }
-      }
-    </style>
   </head>
   <body>
-    <header class="main-header">
-      <div class="header-container">
-        <div class="logo">
-          <h1>Hyperlume</h1>
-        </div>
-        <nav class="nav-menu">
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">OurTeam</a></li>
-            <li><a href="/upload">Upload</a></li>
-          </ul>
-        </nav>
-        <div class="auth-buttons">
-          <!-- <button class="btn login">Login</button> -->
-          <a href="/register" class="btn register">Register</a>
-        </div>
-      </div>
-    </header>
-    <div class="flag">
-      <% if ( message) { %>
-        <div class="error"><%=  message %></div>
-        <% } %>
-    </div>
+    <%- include('./utils/navbar') %>
+    <% if ( message) { %>
+      <div class="<%= (type == 'danger')? 'alert-danger' : 'alert-success' %>"><%=  message %></div>
+    <% } %>
     <div class="mainbody">
       <div class="video-background">
         <div class="overlay"></div>
@@ -453,7 +36,7 @@
           <div class="guest-card">
             <div class="guest-image">
               <img
-                src="assets/nikhil malankar.jpeg"
+                src="public/Assets/nikhil malankar.jpeg"
                 alt="Nikhil Malankar - Special Guest"
               />
             </div>
@@ -471,6 +54,17 @@
           </div>
         </div>
       </section>
+
+
+      <section id="game-theme">
+        <div class="game-theme-card">
+          <div class="game-theme-info">
+            <h1>Game Development Theme</h1>
+            <h2>OUT OF CONTROL</h2>
+          </div>
+        </div>
+      </section>
+      
 
       <!-- Add this after the special-guest section -->
       <section class="leaderboard-section">
@@ -642,7 +236,7 @@
       </button>
     </div>
 
-    <script src="script1.js"></script>
+    <script src="script.js"></script>
     <script>
       const bgMusic = document.getElementById("bgMusic");
       const musicToggle = document.getElementById("musicToggle");
@@ -872,17 +466,21 @@
           display: inline-block;
         "
       >
-       
-        <span
-          style="
-            background: linear-gradient(90deg, #ffd700, #ff1493);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-          "
-          >Game Dev Community</span
-        >
+      <p>
+        <span style="
+          background: linear-gradient(90deg, #ffd700, #ff1493);
+          background-clip: text;
+          -webkit-background-clip: text; /* For WebKit browsers */
+          -webkit-text-fill-color: transparent;
+          color: transparent; /* Standard fallback */
+          font-weight: bold;
+          display: inline-block;
+        ">
+          Game Development Community
+        </span>
       </p>
+      
+      
     </footer>
   </body>
 </html>

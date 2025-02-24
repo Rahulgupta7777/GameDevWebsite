@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const gameSchema = new mongoose.Schema({
   teamUserID: { type: String, required: true },
+  name: { type: String, required: true },
   itchioURL: {
     type: String,
     required: true,
@@ -21,6 +22,7 @@ const gameSchema = new mongoose.Schema({
       "other",
     ],
   },
+  submitDate: { type: Date, default: Date.now },
 });
 
 const Game = mongoose.model("Game", gameSchema);

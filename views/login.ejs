@@ -199,34 +199,15 @@
     </style>
   </head>
   <body>
-    <!-- Add background effects containers -->
     <div class="retro-background">
       <div class="grid"></div>
-      <!-- Scanlines will be added by JavaScript -->
     </div>
 
     <div class="coin-background">
-      <!-- Coins will be added by JavaScript -->
     </div>
 
     <!-- Add navigation menu -->
-    <header class="main-header">
-      <div class="header-container">
-        <div class="logo">
-          <h1>Hyperlume</h1>
-        </div>
-        <nav class="nav-menu">
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">OurTeam</a></li>
-            <li><a href="/upload">Upload</a></li>
-          </ul>
-        </nav>
-        <div class="auth-buttons">
-            <a href="/register" class="btn register">Register</a>
-        </div>
-      </div>
-    </header>
+    <%- include('./utils/navbar') %>
 
     <div
       class="container"
@@ -237,15 +218,17 @@
           • Submission Open
           <div>Deadline: Feb 27, 2025 23:59 IST</div>
         </div>
-
+        <% if (message) { %>
+          <div class="alert alert-danger"><%= message %></div>
+        <% } %>
         <form id="gameSubmissionForm" method="post" action="/login">
           <div class="form-group">
             <label for="teamName">Team leader email</label>
-            <input type="email" id="teamName" name="teamName" pattern=".+@adypu\.edu\.in" placeholder="Email" required />
+            <input type="email" id="teamName" name="teamName" pattern=".+@adypu\.edu\.in" placeholder="Email" value="<%= data ? data.teamName : '' %>" required />
           </div>
           <div class="form-group">
             <label for="Password">password</label>
-            <input type="password" id="Password" name="password" placeholder="Password" required />
+            <input type="password" id="Password" name="password" placeholder="Password" value="<%= data ? data.teamName : '' %>" required />
           </div>
           <button type="submit" class="btn submit-btn">Login</button>
         </form>

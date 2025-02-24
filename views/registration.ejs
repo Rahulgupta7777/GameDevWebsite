@@ -405,30 +405,13 @@
     </style>
   </head>
   <body>
-    <header class="main-header">
-      <div class="header-container">
-        <div class="logo">
-          <h1>Hyperlume</h1>
-        </div>
-        <nav class="nav-menu">
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">OurTeam</a></li>
-            <li><a href="/upload">Upload</a></li>
-          </ul>
-        </nav>
-        <div class="auth-buttons">
-          <!-- <button class="btn login">Login</button> -->
-          <a href="/register" class="btn register">Register</a>
-        </div>
-      </div>
-    </header>
+    <%- include('./utils/navbar') %>
 
     <div class="submission-section">
       <div class="submission-container">
         <h2>Team Registration</h2>
-        <% if (error) { %>
-        <div class="error"><%= error %></div>
+        <% if (message) { %>
+        <div class="alert-danger"><%= message %></div>
         <% } %>
         <form
           id="teamSubmissionForm"
@@ -438,7 +421,13 @@
         >
           <div class="form-group">
             <label for="teamName">Team Name</label>
-            <input type="text" id="teamName" name="teamName" required />
+            <input
+              type="text"
+              id="teamName"
+              name="teamName"
+              required
+              value="<%= teamData? teamData.teamName : '' %>"
+            />
           </div>
 
           <div class="form-group">
@@ -448,6 +437,7 @@
               id="teamPassword"
               name="password"
               minlength="8"
+              value="<%= teamData? teamData.password : '' %>"
               required
             />
           </div>
@@ -457,7 +447,13 @@
             <h3>Team Leader</h3>
             <div class="form-group">
               <label for="leaderName">Full Name</label>
-              <input type="text" id="leaderName" name="leaderName" required />
+              <input
+                type="text"
+                id="leaderName"
+                name="leaderName"
+                required
+                value="<%= teamData? teamData.leaderName || '' : '' %>"
+              />
             </div>
             <div class="form-group">
               <label for="leaderEmail">ADYPU Email</label>
@@ -467,12 +463,19 @@
                 name="leaderEmail"
                 pattern=".+@adypu\.edu\.in"
                 title="Please use your ADYPU email"
+                value="<%= teamData? teamData.leaderEmail || '' : '' %>"
                 required
               />
             </div>
             <div class="form-group">
               <label for="leaderURN">URN Number</label>
-              <input type="text" id="leaderURN" name="leaderURN" required />
+              <input
+                type="text"
+                id="leaderURN"
+                name="leaderURN"
+                required
+                value="<%= teamData? teamData.leaderURN || '' : '' %>"
+              />
             </div>
           </div>
 
@@ -481,7 +484,13 @@
             <h3>Member 2</h3>
             <div class="form-group">
               <label for="member2Name">Full Name</label>
-              <input type="text" id="member2Name" name="member2Name" required />
+              <input
+                type="text"
+                id="member2Name"
+                name="member2Name"
+                value="<%= teamData? teamData.member2Name || '' : '' %>"
+                required
+              />
             </div>
             <div class="form-group">
               <label for="member2Email">ADYPU Email</label>
@@ -492,11 +501,18 @@
                 pattern=".+@adypu\.edu\.in"
                 title="Please use your ADYPU email"
                 required
+                value="<%= teamData? teamData.member2Email || '' : '' %>"
               />
             </div>
             <div class="form-group">
               <label for="member2URN">URN Number</label>
-              <input type="text" id="member2URN" name="member2URN" required />
+              <input
+                type="text"
+                id="member2URN"
+                name="member2URN"
+                required
+                value="<%= teamData? teamData.member2URN || '' : '' %>"
+              />
             </div>
           </div>
 
@@ -505,7 +521,12 @@
             <h3>Member 3 (Optional)</h3>
             <div class="form-group">
               <label for="member3Name">Full Name</label>
-              <input type="text" id="member3Name" name="member3Name" />
+              <input
+                type="text"
+                id="member3Name"
+                name="member3Name"
+                value="<%= teamData? teamData.member3Name || '' : '' %>"
+              />
             </div>
             <div class="form-group">
               <label for="member3Email">ADYPU Email</label>
@@ -515,11 +536,17 @@
                 name="member3Email"
                 pattern=".+@adypu\.edu\.in"
                 title="Please use your ADYPU email"
+                value="<%= teamData? teamData.member3Email || '' : '' %>"
               />
             </div>
             <div class="form-group">
               <label for="member3URN">URN Number</label>
-              <input type="text" id="member3URN" name="member3URN" />
+              <input
+                type="text"
+                id="member3URN"
+                name="member3URN"
+                value="<%= teamData? teamData.member3URN || '' : '' %>"
+              />
             </div>
           </div>
 
