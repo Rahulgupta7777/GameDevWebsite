@@ -19,7 +19,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   if (req.query.registration === "success") {
     return res.render("index", {
-      message: "Registration successful. Please login to upload your game.",
+      message:
+        "Registration successful. Please go to upload page for uploading game.",
       type: "success",
     });
   }

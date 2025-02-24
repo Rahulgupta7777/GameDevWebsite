@@ -1732,4 +1732,102 @@ html {
     75% {
         transform: translateX(5px) translateY(-5px) scale(1.1);
     }
+}/* General Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
 }
+
+th, td {
+    border: 1px solid #ff8800;
+    padding: 10px;
+    text-align: left;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+th {
+    background: #ff8800;
+    color: #000;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+td {
+    background: rgba(255, 136, 0, 0.1);
+}
+
+/* Highlight active row */
+.active {
+    background-color: rgba(255, 136, 0, 0.3) !important;
+}
+
+/* Table Container */
+.table-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(255, 132, 0, 0.2);
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.8rem;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}
+.alert-success {
+    text-align: center;
+    display: inline-block;
+    margin-top: 100px;
+    margin-left: 250px;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    text-align: center;
+    display: inline-block;
+    margin-top: 100px;
+    margin-left: 250px;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #f5c6cb;
+}
+.button-container {
+    text-align: center;
+}
+
+.register-btn {
+    background: linear-gradient(135deg, #054313, #0b6d06);
+    color: white;
+    margin-top: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 117, 140, 0.4);
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.register-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(255, 117, 140, 0.6);}

@@ -411,8 +411,11 @@
       <div class="submission-container">
         <h2>Team Registration</h2>
         <% if (message) { %>
-        <div class="alert-danger"><%= message %></div>
+        <div class="alert-danger" style="margin-top: 12px; margin-left: auto">
+          <%= message %>
+        </div>
         <% } %>
+
         <form
           id="teamSubmissionForm"
           class="submission-form"
@@ -440,6 +443,9 @@
               value="<%= teamData? teamData.password : '' %>"
               required
             />
+            <span style="color: white; margin-top: 15px; font-size: 12px">
+              Minimum (8) length characters</span
+            >
           </div>
 
           <!-- Team Leader Details -->
