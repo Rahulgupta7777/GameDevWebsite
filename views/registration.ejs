@@ -404,36 +404,42 @@
       }
     </style>
   </head>
-  <body>
+  <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center;">
     <%- include('./utils/navbar') %>
 
-    <div class="submission-section">
+    <div class="submission-section" style="border: 1px solid whitesmoke;">
       <div class="submission-container">
         <h2>Team Registration</h2>
         <% if (message) { %>
-        <div class="alert-danger" style="margin-top: 12px; margin-left: auto">
-          <%= message %>
-        </div>
-        <% } %>
-
-        <form
+          <div class="alert-danger" style="margin-top: 12px; margin-left: auto">
+            <%= message %>
+          </div>
+          <% } %>
+          
+          <form
           id="teamSubmissionForm"
           class="submission-form"
           action="/registration"
           method="POST"
-        >
-          <div class="form-group">
+          style="width: 60%; margin: 20px auto; padding: 20px; background-color: #f8d7da; border: 1px solid #ded4d5; border-radius: 10px; text-align: center; font-family: Arial, sans-serif; color: #721c24; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+          
+          <p style="font-size: 16px; font-weight: bold; margin: 0;">🚨 Registration for the event is now closed. Stay tuned for future updates!</p>
+        </form>
+        
+      </div>
+    </div>
+          <!-- <div class="form-group">
             <label for="teamName">Team Name</label>
             <input
-              type="text"
+            type="text"
               id="teamName"
               name="teamName"
               required
               value="<%= teamData? teamData.teamName : '' %>"
             />
-          </div>
+          </div> -->
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="teamPassword">Password</label>
             <input
               type="password"
@@ -446,10 +452,10 @@
             <span style="color: white; margin-top: 15px; font-size: 12px">
               Minimum (8) length characters</span
             >
-          </div>
+          </div> -->
 
           <!-- Team Leader Details -->
-          <div class="member-section">
+          <!-- <div class="member-section">
             <h3>Team Leader</h3>
             <div class="form-group">
               <label for="leaderName">Full Name</label>
@@ -476,17 +482,17 @@
             <div class="form-group">
               <label for="leaderURN">URN Number</label>
               <input
-                type="text"
-                id="leaderURN"
+                type="text" -->
+                <!-- id="leaderURN"
                 name="leaderURN"
                 required
                 value="<%= teamData? teamData.leaderURN || '' : '' %>"
               />
             </div>
-          </div>
+          </div> -->
 
           <!-- Member 2 Details -->
-          <div class="member-section">
+          <!-- <div class="member-section">
             <h3>Member 2</h3>
             <div class="form-group">
               <label for="member2Name">Full Name</label>
@@ -497,8 +503,8 @@
                 value="<%= teamData? teamData.member2Name || '' : '' %>"
                 required
               />
-            </div>
-            <div class="form-group">
+            </div> -->
+            <!-- <div class="form-group">
               <label for="member2Email">ADYPU Email</label>
               <input
                 type="email"
@@ -508,9 +514,9 @@
                 title="Please use your ADYPU email"
                 required
                 value="<%= teamData? teamData.member2Email || '' : '' %>"
-              />
-            </div>
-            <div class="form-group">
+              /> -->
+            <!-- </div> -->
+            <!-- <div class="form-group">
               <label for="member2URN">URN Number</label>
               <input
                 type="text"
@@ -520,10 +526,10 @@
                 value="<%= teamData? teamData.member2URN || '' : '' %>"
               />
             </div>
-          </div>
+          </div> -->
 
           <!-- Member 3 Details (Optional) -->
-          <div class="member-section">
+          <!-- <div class="member-section">
             <h3>Member 3 (Optional)</h3>
             <div class="form-group">
               <label for="member3Name">Full Name</label>
@@ -545,8 +551,8 @@
                 value="<%= teamData? teamData.member3Email || '' : '' %>"
               />
             </div>
-            <div class="form-group">
-              <label for="member3URN">URN Number</label>
+            <div class="form-group"> -->
+              <!-- <label for="member3URN">URN Number</label>
               <input
                 type="text"
                 id="member3URN"
@@ -558,10 +564,7 @@
 
           <button type="submit" class="btn submit-btn">
             Submit Team Registration
-          </button>
-        </form>
-      </div>
-    </div>
+          </button> -->
 
     <audio id="bgMusic" loop>
       <source src="Assets/AdhesiveWombat.mp3" type="audio/mp3" />
@@ -812,28 +815,10 @@
         z-index: 2;
       "
     >
-      <p
-        class="footer-text"
-        style="
-          font-size: 1.2em;
-          text-shadow: 0 0 10px #ffd700;
-          animation: footerGlow 2s ease-in-out infinite alternate;
-          transition: transform 0.3s ease;
-          cursor: pointer;
-          display: inline-block;
-        "
-      >
-        Frontend by
-        <span
-          style="
-            background: linear-gradient(90deg, #ffd700, #ff1493);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-          "
-          >Aryan Verma</span
-        >
       </p>
     </footer>
+
+    <script src="script.js"></script>
+    <script src="mouseTrail.js"></script>
   </body>
 </html>

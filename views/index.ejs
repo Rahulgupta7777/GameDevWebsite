@@ -6,7 +6,7 @@
     <title>Game Development</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
+  <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center;">
     <%- include('./utils/navbar') %>
     <% if ( message) { %>
       <div class="<%= (type == 'danger')? 'alert-danger' : 'alert-success' %>"><%=  message %></div>
@@ -78,61 +78,36 @@
               <div class="leaderboard-header">
                 <span class="rank">Rank</span>
                 <span class="team">Team Name</span>
-                <span class="score">Score</span>
+                <span class="score">Game</span>
               </div>
               <!-- Gold - 1st Place -->
               <div class="leaderboard-row gold">
                 <span class="rank">#1</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
+                <span class="team">Uncontrollables</span>
+                <span class="score"><a href="https://kritgarg.itch.io/never-landing" style="text-decoration: none;color: gold;">Play</a></span>
               </div>
               <!-- Silver - 2nd Place -->
               <div class="leaderboard-row silver">
                 <span class="rank">#2</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
+                <span class="team">Petrosapiens</span>
+                <span class="score"><a href="https://kritgarg.itch.io/never-landing" style="text-decoration: none;color: silver;">Play</a></span>
               </div>
               <!-- Bronze - 3rd Place -->
               <div class="leaderboard-row bronze">
                 <span class="rank">#3</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
+                <span class="team">Tesseract</span>
+                <span class="score"><a href="https://kritgarg.itch.io/never-landing" style="text-decoration: none;color: orange">Play</a></span>
               </div>
               <!-- Regular rows -->
               <div class="leaderboard-row">
                 <span class="rank">#4</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
+                <span class="team">Sms</span>
+                <span class="score"><a href="https://kritgarg.itch.io/never-landing" style="text-decoration: none;color: whitesmoke;">Play</a></span>
               </div>
               <div class="leaderboard-row">
                 <span class="rank">#5</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
-              </div>
-              <div class="leaderboard-row">
-                <span class="rank">#6</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
-              </div>
-              <div class="leaderboard-row">
-                <span class="rank">#7</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
-              </div>
-              <div class="leaderboard-row">
-                <span class="rank">#8</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
-              </div>
-              <div class="leaderboard-row">
-                <span class="rank">#9</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
-              </div>
-              <div class="leaderboard-row">
-                <span class="rank">#10</span>
-                <span class="team">---</span>
-                <span class="score">---</span>
+                <span class="team">Three Virtues</span>
+                <span class="score"><a href="https://kritgarg.itch.io/never-landing" style="text-decoration: none;color: whitesmoke;">Play</a></span>
               </div>
             </div>
           </div>

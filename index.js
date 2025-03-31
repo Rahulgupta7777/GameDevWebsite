@@ -91,6 +91,7 @@ app.get("/view", async (req, res) => {
   const submissions = await Game.find();
   res.render("submissions", { submissions, teamName: req.query.teamname });
 });
+
 app.get("/register", (req, res) => {
   res.render("registration", { message: null, teamData: null });
 });
@@ -179,6 +180,11 @@ app.post("/login", async (req, res) => {
     console.log({ success: false, message: "Server error" });
     res.render("login", { message: "Server Error", data: null });
   }
+});
+
+// ✅ Added route for Event Highlights
+app.get("/event-highlights", (req, res) => {
+  res.render("Event");
 });
 
 // ✅ Error-handling middleware

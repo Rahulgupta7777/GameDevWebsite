@@ -6,7 +6,7 @@
   <title>Submission Page</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; text-align: center;">
   <%- include('./utils/navbar') %>
 
   <div class="retro-background">
@@ -31,7 +31,7 @@
         <tr>
           <th>Team Name</th>
           <th>URL</th>
-          <th>Game Description</th>
+          <th style="width: 80%; font-size: 14px;">Game Description</th>
           <th>Game Genre</th>
         </tr>
       </thead>
@@ -40,7 +40,7 @@
         <tr class="<%= (submission.name == teamName) ? 'active' : '' %>">
           <td><%= submission.name %></td>
           <td><a href="<%= submission.itchioURL %>" style="color: #fff;" target="_blank`"> <%= submission.itchioURL %></td>
-          <td><%= submission.gameDescription %></td>
+          <td style="font-size: 12px; width: 50%;"><%= submission.gameDescription %></td>
           <td><%= submission.gameGenre %></td>
         </tr>
         <% }) } %>
