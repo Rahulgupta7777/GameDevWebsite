@@ -174,27 +174,25 @@ app.post("/login", async (req, res) => {
       teamID: team._id,
       teamName: team.teamName,
     });
+    console.log({ success: true, message: "Login successful", team });
   } catch (error) {
     console.error("Error validating team:", error);
+    console.log({ success: false, message: "Server error" });
     res.render("login", { message: "Server Error", data: null });
   }
 });
 
+
 app.get("/event-highlights", (req, res) => {
   res.render("Event");
 });
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });
 
-// Only listen on a port in local development
-if (process.env.NODE_ENV !== "production") {
-  app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-  });
-}
-
-// Export for Vercel serverless
-module.exports = app;
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
