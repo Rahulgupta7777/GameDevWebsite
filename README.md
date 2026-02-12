@@ -72,8 +72,3 @@ This project is configured for deployment on [Vercel](https://vercel.com).
    ```bash
    vercel --prod
    ```
-
-
-## 📄 License
-
-This project is licensed under the ISC License.
