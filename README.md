@@ -1,4 +1,4 @@
-## hyperlume a game development hackathon website 
+## Hyperlume a game development hackathon website 
 
 A  platform for game development event organised at Newton School of Technology, 
 allowing teams to register, submit their games, games are built on unity editor and based on the learning on workshop conducted on.
